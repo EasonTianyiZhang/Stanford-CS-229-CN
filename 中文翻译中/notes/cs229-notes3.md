@@ -24,7 +24,7 @@ CS229 Lecture notes
 
 在讨论 SVMs 的时候，出于简化的目的，我们先要引入一个新的记号，用来表示分类。假设我们要针对一个二值化分类的问题建立一个线性分类器，其中用来分类的标签（label）为 y，分类特征（feature）为 x。从此以后我们就用 y ∈ {−1, 1} (而不是之前的 {0, 1}) 来表示这个分类标签了。另外，以后咱们也不再使用向量 θ 来表示咱们这个线性分类器的参数了，而是使用参数 w 和 b，把分类器写成下面这样：
 
-![](cs229-notes3.fld/image002.png)
+<img src="https://latex.codecogs.com/gif.latex?\dpi{150}&space;h_{w,b}=g(w^T&plus;b)" title="h_{w,b}=g(w^T+b)" />
 
 当 z ≥ 0，则 g(z) = 1；而反之若 z ＜ 0，则g(z) = -1。这里的这个 “w, b” 记号就可以让我们能把截距项（intercept term）b 与其他的参数区别开。（此外我们也不用再像早些时候那样要去设定 x0 = 1 这样的一个额外的输入特征向量了。）所以，这里的这个参数 b 扮演的角色就相当于之前的参数 θ0 ，而参数 w 则相当于 \[θ1 . . . θn\]T。
 
@@ -34,7 +34,7 @@ CS229 Lecture notes
 
 咱们来用正规语言来将函数边界和几何边界的记号的概念进行正规化。给定一个训练集 (x(i), y(i))，我们用下面的方法来定义对应该训练集的函数边界 (w, b)：
 
-![](cs229-notes3.fld/image003.png)
+<img src="https://latex.codecogs.com/gif.latex?\dpi{150}&space;\hat{\gamma}^{(i)}=y^{(i)}(w^Tx&plus;b)" title="\hat{\gamma}^{(i)}=y^{(i)}(w^Tx+b)" />
 
 要注意，如果 y(i) = 1，那么为了让函数边界很大（也就是说，我们的预测很可信并且很正确），我们就需要 wT x + b 是一个很大的正数。与此相对，如果 y(i) = −1，那么为了让函数边界很大，我们就需要wT x + b 是一个很大（绝对值）的负数。而且，只要满足 y(i)(wT x + b) &gt; 0，那我们针对这个样本的预测就是正确的。（自己检验证明吧。）因此，一个大的函数边界就表示了一个可信且正确的预测。
 
@@ -42,31 +42,32 @@ CS229 Lecture notes
 
 给定一个训练集 S = {(x(i),y(i)); i = 1, ..., m}，我们将对应 S 的函数边界 (w, b) 定义为每个训练样本的函数边界的最小值。记作 γˆ，可以写成：
 
-![](cs229-notes3.fld/image004.png)
+<img src="https://latex.codecogs.com/gif.latex?\dpi{150}&space;\hat{\gamma}=\min_{i=1,...,m}\hat{\gamma}^{(i)}" title="\hat{\gamma}=\min_{i=1,...,m}\hat{\gamma}^{(i)}" />
 
 接下来，咱们要讲的是几何边界（geometric margins）。例如下图所示：
 
-![](cs229-notes3.fld/image005.png)
+![](cs229-notes3.fld/image009.png)
 
 图中给出了对应 (w, b) 的分类边界，其倾斜方向（即法线方向）为向量 w 的方向。这里的向量 w 是与**分类超平面**垂直的（orthogonal，即夹角为 90°）。（你需要说服自己现实情况一定是这样的。）假设有图中所示的一个点 A，此点表示的是针对某训练样本的输入特征为 x(i) ，对应的标签（label）为 y(i) = 1。然后这个点到分类边界的距离 γ(i), 就通过 AB 之间的线段能够获得。
 
 怎么找到的 γ(i) 值呢？这样，w/||w|| 是一个单位长度的向量，指向与 w 相同的方向。因为这里 A 点表示的是 x(i)，所以就能找到一个点 B，其位置为 x(i) − γ(i) · w/||w||。这个 B 点正好位于分类边界线上面，而这条线上的所有 x 都满足等式 wT x + b = 0 ，所以有：
 
-![](cs229-notes3.fld/image006.png)
+<img src="https://latex.codecogs.com/gif.latex?\dpi{150}&space;w^T(x^{(i)}-\gamma&space;^{(i)}\frac{w}{||w||})&plus;b=0" title="w^T(x^{(i)}-\gamma ^{(i)}\frac{w}{||w||})+b=0" />
 
 通过上面的方程解出来的 γ(i) 为：
 
-![](cs229-notes3.fld/image007.png)
+
+<img src="https://latex.codecogs.com/gif.latex?\dpi{150}&space;\gamma&space;^{(i)}=\frac{w^Tx^{(i)}&plus;b}{||w||}=(\frac{w}{||w||})^Tx^{(i)}&plus;\frac{b}{||w||}" title="\gamma ^{(i)}=\frac{w^Tx^{(i)}+b}{||w||}=(\frac{w}{||w||})^Tx^{(i)}+\frac{b}{||w||}" />
 
 这个解是针对图中 A 处于训练样本中正向部分这种情况，这时候位于“正向（positive）”一侧就是很理想的情况。如果更泛化一下，就可以定义对应训练样本 (x(i), y(i)) 的几何边界 (w, b) 为：
 
-![](cs229-notes3.fld/image008.png)
+<img src="https://latex.codecogs.com/gif.latex?\dpi{150}&space;\gamma&space;^{(i)}=y^{(i)}((\frac{w}{||w||})^Tx^{(i)}&plus;\frac{b}{||w||})" title="\gamma ^{(i)}=y^{(i)}((\frac{w}{||w||})^Tx^{(i)}+\frac{b}{||w||})" />
 
 这里要注意，如果 ||w|| = 1，那么函数边界（functional margin）就等于几何边界（geometric margin）——我们可以用这种方法来将两个边界记号联系起来。此外，几何边界是不受参数缩放的影响的；也就是说，如果我们把 w 改为 2w，b 改为 2b，那么几何边界并不会改变。稍后这个性质就会派上用场了。特别要注意的是，由于这个与参数缩放的无关性，当试图对某个数据集的 w 和 b 进行拟合的时候，我们就可以倒入一个任意设置的缩放参数来约束 w，而不会改变什么重要项；例如，我们可以设置 ||w|| = 1，或者 |w1| = 5，或者 |w1 +b|+|w2| = 2，等等都可以，这些都只需要对 w 和 b 进行缩放就可以满足了。
 
 最后，给定一个训练集 S = {(x(i), y(i)); i = 1, ..., m}，我们也可以我们将对应 S 的几何边界 (w, b) 定义为每个训练样本的几何边界的最小值：
 
-![](cs229-notes3.fld/image009.png)
+<img src="https://latex.codecogs.com/gif.latex?\dpi{150}&space;\gamma=\min_{i=1,...,m}\gamma^{(i)}" title="\gamma=\min_{i=1,...,m}\gamma^{(i)}" />
 
 # 4 最优边界分类器（optimal margin classifier） 
 
